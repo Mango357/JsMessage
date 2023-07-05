@@ -58,10 +58,6 @@ app.get("/send", async function (req, res) {
   res.send(info)
 });
 
-app.listen(80, function () {
-  console.log('服务启动成功！')
-})
-
 async function sendapi(openid) {
   return new Promise((resolve, reject) => {
     request({
@@ -70,7 +66,7 @@ async function sendapi(openid) {
       body: JSON.stringify({
         touser: openid,
         template_id: "maOpraeLg90lDuXNiLEbtnQMaesND7yihJMh8g-Fjz0",
-        miniprogram_state: "developer",
+        miniprogram_state: "formal",
         data: {
           // 这里替换成自己的模板ID的详细事项，不要擅自添加或更改
           // 按照key前面的类型，对照参数限制填写，否则都会发送不成功
