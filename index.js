@@ -4,6 +4,7 @@ const request = require("request");
 const cors = require("cors");
 const morgan = require("morgan");
 const { init: initDB, Counter } = require("./db");
+const { log } = require("console");
 
 const logger = morgan("tiny");
 
@@ -52,7 +53,8 @@ app.get("/api/wx_openid", async (req, res) => {
 
 
 app.get("/send", async function (req, res) {
-  const { openid } = req.query // 通过get参数形式指定openid
+  // const { openid } = req.query // 通过get参数形式指定openid
+  const { openid } = req.headers["x-wx-openid"]
   // 在这里直接是触发性发送，也可以自己跟业务做绑定，改成事件性发送
   const info = await sendapi(openid)
   res.send(info)
@@ -98,4 +100,12 @@ async function bootstrap() {
   });
 }
 
+function Messageing() {
+  setInterval(() => {
+    sendapi('');
+  }, 60 * 5 * 1000)
+}
+
+
 bootstrap();
+Messageing();
