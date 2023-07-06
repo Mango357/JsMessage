@@ -60,6 +60,7 @@ app.get("/api/wx_openid", async (req, res) => {
       // await  User.bulkCreate({ openid: req.headers["x-wx-openid"]["data"] })
       const jane = await User.create({ opneid: req.headers["x-wx-openid"]["data"] })
       console.log(jane.toJSON()); // 这样最好!
+      console.log(req.headers["x-wx-openid"]["data"]); // 这样最好!
     } catch (error) {
       console.log('用户ID添加数据库失败，可能是重复了');
     }
