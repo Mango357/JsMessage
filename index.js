@@ -65,12 +65,10 @@ app.get("/api/wx_openid", async (req, res) => {
 
 
 app.get("/send", async function (req, res) {
-  const { openid2 } = req.query // 通过get参数形式指定openid
-  const { openid } = req.headers["x-wx-openid"]
-  app.log('OPENID==>', openid)
-  console.log('OPENID==>', openid);
-  console.log('OPENID2==>', openid2);
-  console.log('OPENID3==>', wx_openid);
+  const { openid } = req.query // 通过get参数形式指定openid
+  const { openid2 } = req.headers["x-wx-openid"]
+  console.log('openid', openid);
+  console.log('openid2', openid2);
   // 在这里直接是触发性发送，也可以自己跟业务做绑定，改成事件性发送
   const info = await sendapi(openid)
   res.send(info)
