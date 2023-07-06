@@ -14,6 +14,8 @@ app.use(express.json());
 app.use(cors());
 app.use(logger);
 
+const wx_openid = '';
+
 // 首页
 app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
@@ -56,14 +58,19 @@ app.get("/api/count", async (req, res) => {
 // 小程序调用，获取微信 Open ID
 app.get("/api/wx_openid", async (req, res) => {
   if (req.headers["x-wx-source"]) {
+    wx_openid = req.headers["x-wx-openid"]
     res.send(req.headers["x-wx-openid"]);
   }
 });
 
 
 app.get("/send", async function (req, res) {
-  // const { openid } = req.query // 通过get参数形式指定openid
+  const { openid2 } = req.query // 通过get参数形式指定openid
   const { openid } = req.headers["x-wx-openid"]
+  app.log('OPENID==>', openid)
+  console.log('OPENID==>', openid);
+  console.log('OPENID2==>', openid2);
+  console.log('OPENID3==>', wx_openid);
   // 在这里直接是触发性发送，也可以自己跟业务做绑定，改成事件性发送
   const info = await sendapi(openid)
   res.send(info)
