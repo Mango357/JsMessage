@@ -17,16 +17,29 @@ const Counter = sequelize.define("Counter", {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 1,
+
   },
 });
+
+const User = sequelize.define("User", {
+  opneid: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "",
+    unique: true,
+  }
+})
+
 
 // 数据库初始化方法
 async function init() {
   await Counter.sync({ alter: true });
+  await User.sync({ alter: true })
 }
 
 // 导出初始化方法和模型
 module.exports = {
   init,
   Counter,
+  User,
 };

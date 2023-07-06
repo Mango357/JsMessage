@@ -3,7 +3,7 @@ const express = require("express");
 const request = require("request");
 const cors = require("cors");
 const morgan = require("morgan");
-const { init: initDB, Counter } = require("./db");
+const { init: initDB, Counter, User } = require("./db");
 const { log } = require("console");
 
 const logger = morgan("tiny");
@@ -56,9 +56,11 @@ app.get("/api/count", async (req, res) => {
 // 小程序调用，获取微信 Open ID
 app.get("/api/wx_openid", async (req, res) => {
   if (req.headers["x-wx-source"]) {
-    console.log('测试一下获取的ID对不对', req.headers["x-wx-openid"]["data"]);
-    console.log('测试一下获取的ID对不对2', req.headers["x-wx-openid"]);
-    // await User.bulkCreate({ openid: req.headers["x-wx-openid"]["data"] })
+    try {
+      await User.bulkCreate({ openid: req.headers["x-wx-openid"]["data"] })
+    } catch (error) {
+      console.log('用户ID添加数据库失败，可能是重复了');
+    }
     res.send(req.headers["x-wx-openid"]);
   }
 });
@@ -66,13 +68,6 @@ app.get("/api/wx_openid", async (req, res) => {
 
 app.get("/send", async function (req, res) {
   const { openid } = req.query // 通过get参数形式指定openid
-  console.log('openid', openid);
-  if (req.headers["x-wx-source"]) {
-    const { openid2 } = req.headers["x-wx-openid"]
-    console.log('openid2', openid2);
-  }
-  console.log('req', req['rawHeaders']);
-  console.log('req--x-wx-openid', req['x-wx-openid']);
   // 在这里直接是触发性发送，也可以自己跟业务做绑定，改成事件性发送
   const info = await sendapi(openid)
   res.send(info)
@@ -119,10 +114,10 @@ async function bootstrap() {
 }
 
 function Messageing() {
-  let count = 0;
-  setInterval(() => {
-    console.log('定时器在起作用', count++);
-  }, 10 * 1000)
+  // let count = 0;
+  // setInterval(() => {
+  //   console.log('定时器在起作用', count++);
+  // }, 10 * 1000)
 }
 
 
