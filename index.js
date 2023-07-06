@@ -56,6 +56,9 @@ app.get("/api/count", async (req, res) => {
 // 小程序调用，获取微信 Open ID
 app.get("/api/wx_openid", async (req, res) => {
   if (req.headers["x-wx-source"]) {
+    console.log('测试一下获取的ID对不对', req.headers["x-wx-openid"]["data"]);
+    console.log('测试一下获取的ID对不对2', req.headers["x-wx-openid"]);
+    // await User.bulkCreate({ openid: req.headers["x-wx-openid"]["data"] })
     res.send(req.headers["x-wx-openid"]);
   }
 });
@@ -116,9 +119,10 @@ async function bootstrap() {
 }
 
 function Messageing() {
+  let count = 0;
   setInterval(() => {
-    sendapi('');
-  }, 60 * 5 * 1000)
+    console.log('定时器在起作用', count++);
+  }, 10 * 1000)
 }
 
 
