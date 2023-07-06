@@ -1,5 +1,6 @@
 const path = require("path");
 const express = require("express");
+const request = require("request");
 const cors = require("cors");
 const morgan = require("morgan");
 const { init: initDB, Counter } = require("./db");
@@ -48,6 +49,49 @@ app.get("/api/wx_openid", async (req, res) => {
     res.send(req.headers["x-wx-openid"]);
   }
 });
+
+
+app.get("/send", async function (req, res) {
+  const { openid } = req.query // 通过get参数形式指定openid
+  // 在这里直接是触发性发送，也可以自己跟业务做绑定，改成事件性发送
+  const info = await sendapi(openid)
+  res.send(info)
+});
+
+app.listen(80, function () {
+  console.log('服务启动成功！')
+})
+
+async function sendapi(openid) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: "http://api.weixin.qq.com/cgi-bin/message/subscribe/send",
+      method: "POST",
+      body: JSON.stringify({
+        touser: openid,
+        template_id: "maOpraeLg90lDuXNiLEbtnQMaesND7yihJMh8g-Fjz0",
+        miniprogram_state: "developer",
+        data: {
+          // 这里替换成自己的模板ID的详细事项，不要擅自添加或更改
+          // 按照key前面的类型，对照参数限制填写，否则都会发送不成功
+          // 
+          thing3: {
+            value: "签到奖励",
+          },
+          phrase1: {
+            value: "签到状态"
+          },
+          thing5: {
+            value: "温馨提示",
+          },
+        },
+      }),
+    }, function (error, res) {
+      if (error) reject(error)
+      resolve(res.body)
+    });
+  });
+}
 
 const port = process.env.PORT || 80;
 
