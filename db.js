@@ -23,7 +23,7 @@ const Counter = sequelize.define("Counter", {
 
 const User = sequelize.define("User", {
   opneid: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
     defaultValue: "",
     unique: true,
