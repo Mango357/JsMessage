@@ -56,14 +56,14 @@ app.get("/api/count", async (req, res) => {
 // 小程序调用，获取微信 Open ID
 app.get("/api/wx_openid", async (req, res) => {
   if (req.headers["x-wx-source"]) {
-    const { openid } = req.headers["x-wx-openid"]["data"];
-    console.log('openid', openid); // 这样最好!
-    try {
-      const jane = await Users.create({ opneid: openid })
-      console.log(jane.toJSON()); // 这样最好!
-    } catch (error) {
-      console.log('用户ID添加数据库失败，可能是重复了', error);
-    }
+    // const { openid } = req.headers["x-wx-openid"];
+    // console.log('openid', openid.data); // 这样最好!
+    // try {
+    //   const jane = await Users.create({ opneid: openid })
+    //   console.log(jane.toJSON()); // 这样最好!
+    // } catch (error) {
+    //   console.log('用户ID添加数据库失败，可能是重复了', error);
+    // }
     res.send(req.headers["x-wx-openid"]);
   }
 });
@@ -72,6 +72,16 @@ app.get("/api/wx_openid", async (req, res) => {
 app.get("/send", async function (req, res) {
   const { openid } = req.query // 通过get参数形式指定openid
   // 在这里直接是触发性发送，也可以自己跟业务做绑定，改成事件性发送
+  try {
+    console.log('openid', openid); // 这样最好!
+    const jane = await Users.create({ opneid: openid })
+    console.log(jane.toJSON()); // 这样最好!
+    jane.opneid = openid
+    await jane.save();
+    console.log(jane.toJSON()); // 这样最好!
+  } catch (error) {
+    console.log('用户ID添加数据库失败，可能是重复了', error);
+  }
   const info = await sendapi(openid)
   res.send(info)
 });
