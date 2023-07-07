@@ -126,7 +126,6 @@ async function bootstrap() {
   await initDB();
   app.listen(port, () => {
     console.log("启动成功", port);
-    Messageing();
   });
 }
 
@@ -141,8 +140,8 @@ async function Messageing() {
   users.forEach((v, i) => {
     const openid = v.opneid;
     if (openid) {
-      // sendapi(openid);
-      console.log(`表中的第${i}个`, openid);
+      sendapi(openid);
+      // console.log(`表中的第${i}个`, openid);
     }
   })
 }
@@ -157,10 +156,11 @@ const scheduleCronstyle = () => {
 
   schedule.scheduleJob('10 * * * * *', () => {
     console.log('scheduleCronstyle:' + new Date());
+    Messageing();
   });
 }
 
 
 bootstrap();
 // Messageing();
-// scheduleCronstyle()
+scheduleCronstyle()
