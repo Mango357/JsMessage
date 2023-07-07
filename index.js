@@ -76,17 +76,18 @@ app.get("/send", async function (req, res) {
   const { openid } = req.query // 通过get参数形式指定openid
   // 在这里直接是触发性发送，也可以自己跟业务做绑定，改成事件性发送
   try {
-    console.log('openid', openid); // 这样最好!
+    // console.log('openid', openid); // 这样最好!
+    Users.beforeCreate()
     const jane = await Users.create({ opneid: openid })
-    console.log(jane.toJSON()); // 这样最好!
+    // console.log(jane.toJSON()); // 这样最好!
     jane.opneid = openid
     await jane.save();
     console.log(jane.toJSON()); // 这样最好!
   } catch (error) {
     console.log('用户ID添加数据库失败，可能是重复了', error);
   }
-  const info = await sendapi(openid)
-  res.send(info)
+  // const info = await sendapi(openid)
+  res.send(openid)
 });
 
 async function sendapi(openid) {
