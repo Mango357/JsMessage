@@ -77,7 +77,6 @@ app.get("/send", async function (req, res) {
   // 在这里直接是触发性发送，也可以自己跟业务做绑定，改成事件性发送
   try {
     // console.log('openid', openid); // 这样最好!
-    Users.beforeCreate()
     const jane = await Users.create({ opneid: openid })
     // console.log(jane.toJSON()); // 这样最好!
     jane.opneid = openid
