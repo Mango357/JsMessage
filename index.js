@@ -3,7 +3,7 @@ const express = require("express");
 const request = require("request");
 const cors = require("cors");
 const morgan = require("morgan");
-const { init: initDB, Counterm, Users } = require("./db");
+const { init: initDB, Counter, Users } = require("./db");
 const { log } = require("console");
 
 const logger = morgan("tiny");
@@ -56,13 +56,13 @@ app.get("/api/count", async (req, res) => {
 // 小程序调用，获取微信 Open ID
 app.get("/api/wx_openid", async (req, res) => {
   if (req.headers["x-wx-source"]) {
+    const { openid } = req.headers["x-wx-openid"]["data"];
+    console.log('openid', openid); // 这样最好!
     try {
-      const { openid } = req.headers["x-wx-openid"]["data"];
-      console.log('openid', openid); // 这样最好!
       const jane = await Users.create({ opneid: openid })
       console.log(jane.toJSON()); // 这样最好!
     } catch (error) {
-      console.log('用户ID添加数据库失败，可能是重复了');
+      console.log('用户ID添加数据库失败，可能是重复了', error);
     }
     res.send(req.headers["x-wx-openid"]);
   }
