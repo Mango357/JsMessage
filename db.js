@@ -25,7 +25,6 @@ const User = sequelize.define("User", {
   opneid: {
     type: DataTypes.TEXT,
     allowNull: false,
-    defaultValue: "",
     unique: true,
   }
 })
