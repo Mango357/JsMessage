@@ -103,13 +103,13 @@ async function sendapi(openid) {
           // 按照key前面的类型，对照参数限制填写，否则都会发送不成功
           // 
           thing3: {
-            value: "签到奖励",
+            value: "签到奖励提醒",
           },
           phrase1: {
-            value: "签到状态"
+            value: "未签到"
           },
           thing5: {
-            value: "温馨提示",
+            value: "免费领取精美皮肤和强力Buff，更有超多钻石等你来拿！",
           },
         },
       }),
@@ -136,7 +136,7 @@ async function Messageing() {
   // }, 10 * 1000)
 
   const users = await Users.findAll();
-  console.log("All users:", JSON.stringify(users, null, 2));
+  // console.log("All users:", JSON.stringify(users, null, 2));
   users.forEach((v, i) => {
     const openid = v.opneid;
     if (openid) {
@@ -148,16 +148,16 @@ async function Messageing() {
 
 
 const scheduleCronstyle = () => {
-  //每天的早上十点钟定时执行一次:
-  // schedule.scheduleJob('0 0 10 * * *', () => {
+  //每天的早上十点钟定时执行一次: 
+  schedule.scheduleJob('0 0 10 * * *', () => {
+    // console.log('scheduleCronstyle:' + new Date());
+    Messageing();
+  });
+
+  // schedule.scheduleJob('10 * * * * *', () => {
   //   console.log('scheduleCronstyle:' + new Date());
   //   Messageing();
   // });
-
-  schedule.scheduleJob('10 * * * * *', () => {
-    console.log('scheduleCronstyle:' + new Date());
-    Messageing();
-  });
 }
 
 
