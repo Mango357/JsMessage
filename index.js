@@ -109,7 +109,7 @@ async function sendapi(openid) {
             value: "未签到"
           },
           thing5: {
-            value: "免费领取精美皮肤和强力Buff，更有超多钻石等你来拿！",
+            value: "免费领取精美皮肤，还有超多钻石奖励！",
           },
         },
       }),
