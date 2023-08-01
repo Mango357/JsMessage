@@ -59,14 +59,6 @@ app.get("/api/count", async (req, res) => {
 // 小程序调用，获取微信 Open ID
 app.get("/api/wx_openid", async (req, res) => {
   if (req.headers["x-wx-source"]) {
-    // const { openid } = req.headers["x-wx-openid"];
-    // console.log('openid', openid.data); // 这样最好!
-    // try {
-    //   const jane = await Users.create({ opneid: openid })
-    //   console.log(jane.toJSON()); // 这样最好!
-    // } catch (error) {
-    //   console.log('用户ID添加数据库失败，可能是重复了', error);
-    // }
     res.send(req.headers["x-wx-openid"]);
   }
 });
@@ -88,6 +80,12 @@ app.get("/send", async function (req, res) {
   // const info = await sendapi(openid)
   res.send(openid)
 });
+
+app.get("/test", async function (req, res) {
+  const { openid } = req.query;
+  const info = await sendapi(openid);
+  res.send(info);
+})
 
 async function sendapi(openid) {
   return new Promise((resolve, reject) => {
